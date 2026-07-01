@@ -458,9 +458,6 @@ python -m pytest test_main.py -v
 | `TestClusterEvaluation` | 7 | Back-transform correctness, profile shape, size balance, no unclassified labels |
 | `TestPipeline` | 1 | End-to-end smoke test on synthetic data (no real parquet required) |
 
-All tests use **synthetic data** — the real 1.2 GB parquet file is not required to run the test suite.
-
-
 ---
 
 ## Limitations
