@@ -460,24 +460,6 @@ python -m pytest test_main.py -v
 
 All tests use **synthetic data** — the real 1.2 GB parquet file is not required to run the test suite.
 
----
-
-## Key Design Decisions
-
-### Why log1p transformation?
-All continuous features were highly right-skewed (skewness 1.5–7.6). K-Means minimises Euclidean distance — extreme values in raw space would dominate the distance calculation. `log1p(x)` compresses the right tail, reduces skewness to near-zero, and handles zero values safely (unlike `log(x)`).
-
-### Why different scalers for different features?
-StandardScaler assumes the data is roughly normally distributed. Applying it to `hour_of_day` (an ordinal 0–23 value) would imply that 23:00 is "23 times more" than 01:00, which is meaningless. MinMaxScaler bounds it to [0,1] without that implication. Binary features need no scaling at all — applying StandardScaler to a feature that is 99.986% zeros would produce a distorted, near-useless representation.
-
-### Why not cap tips and tolls?
-Both are zero-inflated — over 80% of values are $0. The interquartile range is therefore 0, making IQR-based upper fences equal to 0 — which would wipe all non-zero values. This was discovered by inspecting post-cleaning distributions, not assumed in advance. The fix was to convert them to binary flags rather than capping.
-
-### Why k=7 rather than k=2 (best silhouette)?
-k=2 produces two clusters: "short/cheap" and "long/expensive". While this maximises the silhouette score (0.426), it is not operationally useful — it tells operators nothing they don't already know. k=7 produces a local silhouette peak (0.2423) with seven interpretable segments that can each inform distinct business or policy decisions.
-
-### Why 300,000 rows rather than all 14.7 million?
-K-Means time complexity is O(n × k × i × f) where n=samples, k=clusters, i=iterations, f=features. On 14.7M rows this takes 30+ minutes per k value — impractical for the k=2–10 sweep. 300,000 rows (2% of data) is sufficient to preserve the distributional structure, confirmed by comparing feature means and standard deviations before and after sampling.
 
 ---
 
@@ -508,4 +490,4 @@ K-Means time complexity is O(n × k × i × f) where n=samples, k=clusters, i=it
 
 ---
 
-*Dataset accessed January 2022. Analysis conducted as part of BAN 6440 — Data Mining.*
+*Dataset accessed January 2022. Analysis conducted as part of BAN 6440*
