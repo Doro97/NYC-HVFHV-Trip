@@ -148,7 +148,7 @@ Key findings:
 
 ### Feature Correlation Matrix
 
-![Correlation](output/eda_output/eda_04_correlation.png)
+![Correlation](eda_output/eda_04_correlation.png)
 
 High-correlation pairs identified for removal:
 | Pair | r | Decision |
@@ -160,7 +160,7 @@ High-correlation pairs identified for removal:
 
 ### Temporal Demand Patterns
 
-![Temporal](output/eda_output/eda_07_temporal.png)
+![Temporal](eda_output/eda_07_temporal.png)
 
 - Peak demand: 17:00–19:00 (evening commute)
 - Saturday is the busiest day of the week
